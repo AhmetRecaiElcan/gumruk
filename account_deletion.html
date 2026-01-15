@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Özgür Gümrük - Hesap Silme</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 32px;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+        
+        .header p {
+            font-size: 16px;
+            opacity: 0.95;
+        }
+        
+        .content {
+            padding: 40px;
+        }
+        
+        .section {
+            margin-bottom: 32px;
+        }
+        
+        .section h2 {
+            color: #667eea;
+            font-size: 24px;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .section h3 {
+            color: #333;
+            font-size: 18px;
+            margin: 20px 0 12px 0;
+            font-weight: 600;
+        }
+        
+        .section p {
+            margin-bottom: 12px;
+            color: #555;
+        }
+        
+        .icon {
+            font-size: 28px;
+        }
+        
+        .warning-box {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 16px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        
+        .warning-box strong {
+            color: #856404;
+            display: block;
+            margin-bottom: 8px;
+        }
+        
+        .steps {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 24px;
+            margin: 20px 0;
+        }
+        
+        .steps ol {
+            margin-left: 20px;
+        }
+        
+        .steps li {
+            margin-bottom: 12px;
+            padding-left: 8px;
+        }
+        
+        .data-list {
+            background: #fff;
+            border: 2px solid #e9ecef;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .data-list ul {
+            list-style: none;
+        }
+        
+        .data-list li {
+            padding: 12px;
+            border-bottom: 1px solid #e9ecef;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .data-list li:last-child {
+            border-bottom: none;
+        }
+        
+        .data-list li::before {
+            content: "✓";
+            color: #28a745;
+            font-weight: bold;
+            font-size: 20px;
+        }
+        
+        .contact-box {
+            background: #e7f3ff;
+            border-left: 4px solid #2196F3;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        
+        .contact-box a {
+            color: #2196F3;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        
+        .contact-box a:hover {
+            text-decoration: underline;
+        }
+        
+        .footer {
+            background: #f8f9fa;
+            padding: 24px;
+            text-align: center;
+            color: #666;
+            font-size: 14px;
+        }
+        
+        .lang-selector {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            gap: 8px;
+        }
+        
+        .lang-btn {
+            background: white;
+            border: 2px solid white;
+            padding: 8px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            color: #667eea;
+        }
+        
+        .lang-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+        
+        .lang-btn.active {
+            background: #667eea;
+            color: white;
+        }
+        
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 24px;
+            }
+            
+            .content {
+                padding: 24px;
+            }
+            
+            .section h2 {
+                font-size: 20px;
+            }
+            
+            .lang-selector {
+                position: relative;
+                top: 0;
+                right: 0;
+                justify-content: center;
+                margin-bottom: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="lang-selector">
+                <button class="lang-btn active" onclick="switchLang('tr')">🇹🇷 TR</button>
+                <button class="lang-btn" onclick="switchLang('en')">🇬🇧 EN</button>
+                <button class="lang-btn" onclick="switchLang('de')">🇩🇪 DE</button>
+            </div>
+            <h1>🚗 Özgür Gümrük</h1>
+            <p id="subtitle">Hesap Silme ve Veri Gizliliği Politikası</p>
+        </div>
+        
+        <div class="content">
+            <!-- Türkçe İçerik -->
+            <div class="lang-content" id="content-tr">
+                <div class="section">
+                    <h2><span class="icon">ℹ️</span> Genel Bilgi</h2>
+                    <p>
+                        <strong>Özgür Gümrük</strong> uygulaması, kullanıcılarının verilerini korumayı ve GDPR (Genel Veri Koruma Yönetmeliği) standartlarına uygun hareket etmeyi taahhüt eder.
+                    </p>
+                    <p>
+                        Bu sayfa, Özgür Gümrük uygulamasında hesabınızı nasıl silebileceğinizi ve bu işlem sonucunda hangi verilerin silineceğini açıklamaktadır.
+                    </p>
+                </div>
+
+                <div class="section">
+                    <h2><span class="icon">🗑️</span> Hesap Silme Adımları</h2>
+                    <div class="steps">
+                        <ol>
+                            <li><strong>Özgür Gümrük</strong> mobil uygulamasını açın</li>
+                            <li>Alt menüden <strong>"Profil"</strong> sekmesine gidin</li>
+                            <li>Sağ üst köşedeki <strong>⚙️ Ayarlar</strong> ikonuna tıklayın</li>
+                            <li>Sayfanın en altına inin</li>
+                            <li>Kırmızı renkli <strong>"Hesabı Sil"</strong> butonuna tıklayın</li>
+                            <li>Uyarı mesajını okuyun ve onaylayın</li>
+                            <li>Hesabınız ve tüm verileriniz kalıcı olarak silinecektir</li>
+                        </ol>
+                    </div>
+                    
+                    <div class="warning-box">
+                        <strong>⚠️ ÖNEMLİ UYARI</strong>
+                        <p>Hesap silme işlemi <strong>geri alınamaz</strong>. Tüm verileriniz kalıcı olarak silinecek ve geri getirilemeyecektir.</p>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h2><span class="icon">📦</span> Silinecek Veriler</h2>
+                    <p>Hesabınızı sildiğinizde, aşağıdaki tüm veriler <strong>kalıcı olarak</strong> sistemlerimizden silinecektir:</p>
+                    
+                    <div class="data-list">
+                        <ul>
+                            <li><strong>Profil Bilgileri:</strong> Ad, soyad, e-posta, telefon numarası, yaş, ülke, şehir, profil fotoğrafı</li>
+                            <li><strong>İlanlar:</strong> Oluşturduğunuz tüm araç ilanları ve ilgili detaylar</li>
+                            <li><strong>Talepler:</strong> Oluşturduğunuz tüm ürün talepleri</li>
+                            <li><strong>Mesajlar:</strong> Gönderdiğiniz ve aldığınız tüm mesajlar ve sohbet geçmişi</li>
+                            <li><strong>Bildirimler:</strong> Aldığınız tüm bildirimler</li>
+                            <li><strong>Hesap Bilgileri:</strong> Firebase Authentication hesap bilgileriniz</li>
+                        </ul>
+                    </div>
+
+                    <h3>🕒 Silme Süresi</h3>
+                    <p>Verileriniz, hesap silme işlemini onayladığınız anda <strong>anında ve kalıcı olarak</strong> silinir. Hiçbir veri yedek sunucularda tutulmaz.</p>
+                </div>
+
+                <div class="section">
+                    <h2><span class="icon">🔒</span> Veri Gizliliği ve Güvenlik</h2>
+                    <p>Özgür Gümrük, kullanıcı verilerini aşağıdaki standartlarda korur:</p>
+                    <ul style="margin-left: 20px; margin-top: 12px;">
+                        <li style="margin-bottom: 8px;"><strong>Firebase Cloud Firestore:</strong> Tüm veriler Google Cloud sunucularında şifreli olarak saklanır</li>
+                        <li style="margin-bottom: 8px;"><strong>Firebase Authentication:</strong> Kimlik doğrulama işlemleri endüstri standartlarında güvenlik protokolleri ile korunur</li>
+                        <li style="margin-bottom: 8px;"><strong>Hiçbir üçüncü taraf paylaşımı:</strong> Verileriniz başka hiçbir kurumla paylaşılmaz</li>
+                        <li style="margin-bottom: 8px;"><strong>GDPR Uyumlu:</strong> AB Genel Veri Koruma Yönetmeliği standartlarına uygundur</li>
+                    </ul>
+                </div>
+
+                <div class="section">
+                    <h2><span class="icon">📞</span> İletişim ve Destek</h2>
+                    <div class="contact-box">
+                        <p>Hesap silme işlemi ile ilgili sorularınız veya sorunlarınız için bizimle iletişime geçebilirsiniz:</p>
+                        <p style="margin-top: 12px;">
+                            <strong>E-posta:</strong> <a href="mailto:support@ozgurgumruk.com">support@ozgurgumruk.com</a><br>
+                            <strong>Destek Saatleri:</strong> Pazartesi - Cuma, 09:00 - 18:00 (GMT+3)
+                        </p>
+                        <p style="margin-top: 12px; font-size: 14px; color: #666;">
+                            Destek talebinize en geç 48 saat içinde yanıt vereceğiz.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- English Content -->
+            <div class="lang-content" id="content-en" style="display: none;">
+                <div class="section">
+                    <h2><span class="icon">ℹ️</span> General Information</h2>
+                    <p>
+                        <strong>Özgür Gümrük (Tax-Free Customs)</strong> application is committed to protecting user data and complying with GDPR (General Data Protection Regulation) standards.
+                    </p>
+                    <p>
+                        This page explains how to delete your account in the Özgür Gümrük app and what data will be deleted as a result.
+                    </p>
+                </div>
+
+                <div class="section">
+                    <h2><span class="icon">🗑️</span> Account Deletion Steps</h2>
+                    <div class="steps">
+                        <ol>
+                            <li>Open the <strong>Özgür Gümrük</strong> mobile application</li>
+                            <li>Go to the <strong>"Profile"</strong> tab from the bottom menu</li>
+                            <li>Click the <strong>⚙️ Settings</strong> icon in the top right corner</li>
+                            <li>Scroll down to the bottom of the page</li>
+                            <li>Click the red <strong>"Delete Account"</strong> button</li>
+                            <li>Read and confirm the warning message</li>
+                            <li>Your account and all data will be permanently deleted</li>
+                        </ol>
+                    </div>
+                    
+                    <div class="warning-box">
+                        <strong>⚠️ IMPORTANT WARNING</strong>
+                        <p>Account deletion is <strong>irreversible</strong>. All your data will be permanently deleted and cannot be recovered.</p>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h2><span class="icon">📦</span> Data to be Deleted</h2>
+                    <p>When you delete your account, all of the following data will be <strong>permanently</strong> deleted from our systems:</p>
+                    
+                    <div class="data-list">
+                        <ul>
+                            <li><strong>Profile Information:</strong> First name, last name, email, phone number, age, country, city, profile photo</li>
+                            <li><strong>Listings:</strong> All vehicle listings you created and related details</li>
+                            <li><strong>Requests:</strong> All product requests you created</li>
+                            <li><strong>Messages:</strong> All messages you sent and received and chat history</li>
+                            <li><strong>Notifications:</strong> All notifications you received</li>
+                            <li><strong>Account Information:</strong> Your Firebase Authentication account information</li>
+                        </ul>
+                    </div>
+
+                    <h3>🕒 Deletion Timeline</h3>
+                    <p>Your data is deleted <strong>immediately and permanently</strong> the moment you confirm account deletion. No data is kept on backup servers.</p>
+                </div>
+
+                <div class="section">
+                    <h2><span class="icon">🔒</span> Data Privacy and Security</h2>
+                    <p>Özgür Gümrük protects user data with the following standards:</p>
+                    <ul style="margin-left: 20px; margin-top: 12px;">
+                        <li style="margin-bottom: 8px;"><strong>Firebase Cloud Firestore:</strong> All data is stored encrypted on Google Cloud servers</li>
+                        <li style="margin-bottom: 8px;"><strong>Firebase Authentication:</strong> Authentication processes are protected with industry-standard security protocols</li>
+                        <li style="margin-bottom: 8px;"><strong>No third-party sharing:</strong> Your data is not shared with any other organizations</li>
+                        <li style="margin-bottom: 8px;"><strong>GDPR Compliant:</strong> Complies with EU General Data Protection Regulation standards</li>
+                    </ul>
+                </div>
+
+                <div class="section">
+                    <h2><span class="icon">📞</span> Contact and Support</h2>
+                    <div class="contact-box">
+                        <p>For questions or issues regarding account deletion, please contact us:</p>
+                        <p style="margin-top: 12px;">
+                            <strong>Email:</strong> <a href="mailto:support@ozgurgumruk.com">support@ozgurgumruk.com</a><br>
+                            <strong>Support Hours:</strong> Monday - Friday, 09:00 - 18:00 (GMT+3)
+                        </p>
+                        <p style="margin-top: 12px; font-size: 14px; color: #666;">
+                            We will respond to your support request within 48 hours.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- German Content -->
+            <div class="lang-content" id="content-de" style="display: none;">
+                <div class="section">
+                    <h2><span class="icon">ℹ️</span> Allgemeine Informationen</h2>
+                    <p>
+                        Die Anwendung <strong>Özgür Gümrük (Steuerfreier Zoll)</strong> verpflichtet sich zum Schutz der Benutzerdaten und zur Einhaltung der DSGVO-Standards (Datenschutz-Grundverordnung).
+                    </p>
+                    <p>
+                        Diese Seite erklärt, wie Sie Ihr Konto in der Özgür Gümrük-App löschen können und welche Daten dabei gelöscht werden.
+                    </p>
+                </div>
+
+                <div class="section">
+                    <h2><span class="icon">🗑️</span> Schritte zur Kontolöschung</h2>
+                    <div class="steps">
+                        <ol>
+                            <li>Öffnen Sie die mobile Anwendung <strong>Özgür Gümrük</strong></li>
+                            <li>Gehen Sie im unteren Menü zur Registerkarte <strong>"Profil"</strong></li>
+                            <li>Klicken Sie auf das Symbol <strong>⚙️ Einstellungen</strong> in der oberen rechten Ecke</li>
+                            <li>Scrollen Sie nach unten zum Ende der Seite</li>
+                            <li>Klicken Sie auf die rote Schaltfläche <strong>"Konto löschen"</strong></li>
+                            <li>Lesen und bestätigen Sie die Warnmeldung</li>
+                            <li>Ihr Konto und alle Daten werden dauerhaft gelöscht</li>
+                        </ol>
+                    </div>
+                    
+                    <div class="warning-box">
+                        <strong>⚠️ WICHTIGE WARNUNG</strong>
+                        <p>Die Kontolöschung ist <strong>unumkehrbar</strong>. Alle Ihre Daten werden dauerhaft gelöscht und können nicht wiederhergestellt werden.</p>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h2><span class="icon">📦</span> Zu löschende Daten</h2>
+                    <p>Wenn Sie Ihr Konto löschen, werden alle folgenden Daten <strong>dauerhaft</strong> aus unseren Systemen gelöscht:</p>
+                    
+                    <div class="data-list">
+                        <ul>
+                            <li><strong>Profilinformationen:</strong> Vorname, Nachname, E-Mail, Telefonnummer, Alter, Land, Stadt, Profilbild</li>
+                            <li><strong>Anzeigen:</strong> Alle von Ihnen erstellten Fahrzeuganzeigen und zugehörigen Details</li>
+                            <li><strong>Anfragen:</strong> Alle von Ihnen erstellten Produktanfragen</li>
+                            <li><strong>Nachrichten:</strong> Alle gesendeten und empfangenen Nachrichten und der Chat-Verlauf</li>
+                            <li><strong>Benachrichtigungen:</strong> Alle empfangenen Benachrichtigungen</li>
+                            <li><strong>Kontoinformationen:</strong> Ihre Firebase Authentication-Kontoinformationen</li>
+                        </ul>
+                    </div>
+
+                    <h3>🕒 Löschungszeitraum</h3>
+                    <p>Ihre Daten werden <strong>sofort und dauerhaft</strong> gelöscht, sobald Sie die Kontolöschung bestätigen. Es werden keine Daten auf Backup-Servern gespeichert.</p>
+                </div>
+
+                <div class="section">
+                    <h2><span class="icon">🔒</span> Datenschutz und Sicherheit</h2>
+                    <p>Özgür Gümrük schützt Benutzerdaten nach folgenden Standards:</p>
+                    <ul style="margin-left: 20px; margin-top: 12px;">
+                        <li style="margin-bottom: 8px;"><strong>Firebase Cloud Firestore:</strong> Alle Daten werden verschlüsselt auf Google Cloud-Servern gespeichert</li>
+                        <li style="margin-bottom: 8px;"><strong>Firebase Authentication:</strong> Authentifizierungsprozesse werden mit branchenüblichen Sicherheitsprotokollen geschützt</li>
+                        <li style="margin-bottom: 8px;"><strong>Keine Weitergabe an Dritte:</strong> Ihre Daten werden nicht an andere Organisationen weitergegeben</li>
+                        <li style="margin-bottom: 8px;"><strong>DSGVO-konform:</strong> Entspricht den Standards der EU-Datenschutz-Grundverordnung</li>
+                    </ul>
+                </div>
+
+                <div class="section">
+                    <h2><span class="icon">📞</span> Kontakt und Support</h2>
+                    <div class="contact-box">
+                        <p>Bei Fragen oder Problemen bezüglich der Kontolöschung kontaktieren Sie uns bitte:</p>
+                        <p style="margin-top: 12px;">
+                            <strong>E-Mail:</strong> <a href="mailto:support@ozgurgumruk.com">support@ozgurgumruk.com</a><br>
+                            <strong>Support-Zeiten:</strong> Montag - Freitag, 09:00 - 18:00 (GMT+3)
+                        </p>
+                        <p style="margin-top: 12px; font-size: 14px; color: #666;">
+                            Wir werden Ihre Support-Anfrage innerhalb von 48 Stunden beantworten.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>© 2026 Özgür Gümrük. GDPR ve veri gizliliği standartlarına uygun olarak geliştirilmiştir.</p>
+            <p style="margin-top: 8px;">Son güncelleme: 15 Ocak 2026</p>
+        </div>
+    </div>
+
+    <script>
+        function switchLang(lang) {
+            // Hide all content
+            document.querySelectorAll('.lang-content').forEach(el => {
+                el.style.display = 'none';
+            });
+            
+            // Show selected language
+            document.getElementById('content-' + lang).style.display = 'block';
+            
+            // Update active button
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            // Update subtitle
+            const subtitles = {
+                'tr': 'Hesap Silme ve Veri Gizliliği Politikası',
+                'en': 'Account Deletion and Data Privacy Policy',
+                'de': 'Kontolöschung und Datenschutzrichtlinie'
+            };
+            document.getElementById('subtitle').textContent = subtitles[lang];
+        }
+    </script>
+</body>
+</html>
